@@ -41,7 +41,8 @@ from .const import (
 _LOGGER = logging.getLogger(__name__)
 
 CONFIG_SCHEMA = cv.config_entry_only_config_schema(DOMAIN)
-
+openai.api_key=CONF_API_KEY
+openai.api_base=CONF_API_BASE
 
 # async def async_setup(hass: HomeAssistant, config: ConfigType) -> bool:
 #     """Set up LocalAI Conversation."""
@@ -87,8 +88,10 @@ async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
             partial(
                 # openai.Engine.list,
                 openai.Model.list,
-                api_key=entry.data[CONF_API_KEY],
-                api_base=entry.data[CONF_API_BASE],
+                # openai.api_base,
+                # openai.api_key,
+                # api_key=entry.data[CONF_API_KEY],
+                # api_base=entry.data[CONF_API_BASE],
                 request_timeout=10,
             )
         )
@@ -117,11 +120,10 @@ async def async_unload_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
 class OpenAIAgent(conversation.AbstractConversationAgent):
     """LocalAI Conversation agent."""
 
-    def __init__(self, hass: HomeAssistant, entry: ConfigEntry, api_base: ConfigEntry) -> None:
+    def __init__(self, hass: HomeAssistant, entry: ConfigEntry) -> None:
         """Initialize the agent."""
         self.hass = hass
         self.entry = entry
-        self.api_base = api_base
         # self.api_base = api_base
         self.history: dict[str, list[dict]] = {}
 
@@ -165,8 +167,6 @@ class OpenAIAgent(conversation.AbstractConversationAgent):
 
         try:
             result = await openai.ChatCompletion.acreate(
-                # api_key=self.CONF_API_KEY,
-                # api_base=self.CONF_API_BASE,
                 model=model,
                 messages=messages,
                 max_tokens=max_tokens,
