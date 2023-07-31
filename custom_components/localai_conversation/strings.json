@@ -1,0 +1,53 @@
+{
+  "config": {
+    "error": {
+      "cannot_connect": "[%key:common::config_flow::error::cannot_connect%]",
+      "invalid_auth": "[%key:common::config_flow::error::invalid_auth%]",
+      "unknown": "[%key:common::config_flow::error::unknown%]"
+    },
+    "step": {
+      "user": {
+        "data": {
+          "api_base": "[%key:common::config_flow::data::url%]",
+          "api_key": "[%key:common::config_flow::data::api_key%]"
+        }
+      }
+    }
+  },
+  "options": {
+    "step": {
+      "init": {
+        "data": {
+          "api_base": "API Base URL",
+          "api_key": "API Key",
+          "max_tokens": "Maximum tokens to return in response",
+          "model": "Completion Model",
+          "prompt": "Prompt Template",
+          "temperature": "Temperature",
+          "top_p": "Top P"
+        }
+      }
+    }
+  },
+  "services": {
+    "generate_image": {
+      "description": "Turn a prompt into an image",
+      "fields": {
+        "config_entry": {
+          "description": "The config entry to use for this service",
+          "name": "Config Entry"
+        },
+        "prompt": {
+          "description": "The text to turn into an image",
+          "example": "A photo of a dog",
+          "name": "Prompt"
+        },
+        "size": {
+          "description": "The size of the image to generate",
+          "name": "Size"
+        }
+      },
+      "name": "Generate image"
+    }
+  }
+}
