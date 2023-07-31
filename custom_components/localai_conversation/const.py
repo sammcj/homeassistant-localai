@@ -24,7 +24,7 @@ Answer the user's questions about the world truthfully.
 If the user wants to control a device, reject the request and suggest using the Home Assistant app.
 """
 CONF_CHAT_MODEL = "chat_model"
-DEFAULT_CHAT_MODEL = "ggml-gpt4all-j"
+DEFAULT_CHAT_MODEL = "thebloke__openassistant-llama2-13b-orca-8k-3319-ggml__openassistant-llama2-13b-orca-8k-3319.ggmlv3.q4_k_m.bin"
 CONF_MAX_TOKENS = "max_tokens"
 DEFAULT_MAX_TOKENS = 150
 CONF_TOP_P = "top_p"
