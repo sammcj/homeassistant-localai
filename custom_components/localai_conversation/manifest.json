@@ -1,6 +1,5 @@
 {
   "domain": "localai_conversation",
-  "name": "LocalAI Conversation",
   "codeowners": ["@sammcj"],
   "config_flow": true,
   "dependencies": ["conversation"],
@@ -8,6 +7,7 @@
   "integration_type": "service",
   "iot_class": "local_polling",
   "issue_tracker": "https://github.com/sammcj/homeassistant-localai/issues",
-  "requirements": ["openai==0.27.2"],
-  "version": "0.0.2"
+  "name": "LocalAI Conversation",
+  "requirements": ["openai==0.27.8"],
+  "version": "0.0.3"
 }

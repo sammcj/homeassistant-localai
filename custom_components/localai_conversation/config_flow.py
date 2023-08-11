@@ -1,4 +1,4 @@
-"""Config flow for LocalAI Conversation integration."""
+"""Config flow for OpenAI Conversation integration."""
 from __future__ import annotations
 
 from functools import partial
@@ -12,7 +12,7 @@ from openai import error
 import voluptuous as vol
 
 from homeassistant import config_entries
-# from homeassistant.const import CONF_API_KEY
+from homeassistant.const import CONF_API_KEY
 from homeassistant.core import HomeAssistant
 from homeassistant.data_entry_flow import FlowResult
 from homeassistant.helpers.selector import (
@@ -22,15 +22,14 @@ from homeassistant.helpers.selector import (
 )
 
 from .const import (
-    CONF_API_BASE,
-    CONF_API_KEY,
     CONF_CHAT_MODEL,
     CONF_MAX_TOKENS,
     CONF_PROMPT,
     CONF_TEMPERATURE,
     CONF_TOP_P,
-    DEFAULT_API_BASE,
+    CONF_BASE_URL,
     DEFAULT_API_KEY,
+    DEFAULT_BASE_URL,
     DEFAULT_CHAT_MODEL,
     DEFAULT_MAX_TOKENS,
     DEFAULT_PROMPT,
@@ -44,7 +43,7 @@ _LOGGER = logging.getLogger(__name__)
 STEP_USER_DATA_SCHEMA = vol.Schema(
     {
         vol.Required(CONF_API_KEY, default=DEFAULT_API_KEY): str,
-        vol.Required(CONF_API_BASE, default=DEFAULT_API_BASE): str,
+        vol.Required(CONF_BASE_URL, default=DEFAULT_BASE_URL): str,
     }
 )
 
@@ -55,8 +54,8 @@ DEFAULT_OPTIONS = types.MappingProxyType(
         CONF_MAX_TOKENS: DEFAULT_MAX_TOKENS,
         CONF_TOP_P: DEFAULT_TOP_P,
         CONF_TEMPERATURE: DEFAULT_TEMPERATURE,
-        CONF_API_BASE: DEFAULT_API_BASE,
         CONF_API_KEY: DEFAULT_API_KEY,
+        CONF_BASE_URL: DEFAULT_BASE_URL,
     }
 )
 
@@ -67,12 +66,12 @@ async def validate_input(hass: HomeAssistant, data: dict[str, Any]) -> None:
     Data has the keys from STEP_USER_DATA_SCHEMA with values provided by the user.
     """
     openai.api_key = data[CONF_API_KEY]
-    openai.api_base = data[CONF_API_BASE]
-    await hass.async_add_executor_job(partial(openai.Model.list, request_timeout=10)) #openai.Engine.list
+    openai.api_base = data[CONF_BASE_URL]
+    await hass.async_add_executor_job(partial(openai.Model.list))
 
 
 class ConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
-    """Handle a config flow for LocalAI Conversation."""
+    """Handle a config flow for OpenAI Conversation."""
 
     VERSION = 1
 
@@ -97,7 +96,7 @@ class ConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
             _LOGGER.exception("Unexpected exception")
             errors["base"] = "unknown"
         else:
-            return self.async_create_entry(title="LocalAI Conversation", data=user_input)
+            return self.async_create_entry(title="Custom OpenAI Conversation", data=user_input)
 
         return self.async_show_form(
             step_id="user", data_schema=STEP_USER_DATA_SCHEMA, errors=errors
@@ -123,7 +122,7 @@ class OptionsFlow(config_entries.OptionsFlow):
     ) -> FlowResult:
         """Manage the options."""
         if user_input is not None:
-            return self.async_create_entry(title="LocalAI Conversation", data=user_input)
+            return self.async_create_entry(title="Custom OpenAI Conversation", data=user_input)
         schema = openai_config_option_schema(self.config_entry.options)
         return self.async_show_form(
             step_id="init",
@@ -164,9 +163,4 @@ def openai_config_option_schema(options: MappingProxyType[str, Any]) -> dict:
             description={"suggested_value": options[CONF_TEMPERATURE]},
             default=DEFAULT_TEMPERATURE,
         ): NumberSelector(NumberSelectorConfig(min=0, max=1, step=0.05)),
-        vol.Optional(
-            CONF_API_BASE,
-            description={"suggested_value": options[CONF_API_BASE]},
-            default=DEFAULT_API_BASE,
-        ): vol.Url(),
     }

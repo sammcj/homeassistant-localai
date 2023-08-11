@@ -1,5 +1,5 @@
 {
-  "homeassistant": "2023.7.2",
+  "homeassistant": "2023.8.0",
   "name": "LocalAI Conversation",
   "render_readme": true,
   "topics": ["conversation"]

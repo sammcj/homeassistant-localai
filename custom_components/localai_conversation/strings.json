@@ -8,8 +8,8 @@
     "step": {
       "user": {
         "data": {
-          "api_base": "[%key:common::config_flow::data::url%]",
-          "api_key": "[%key:common::config_flow::data::api_key%]"
+          "api_key": "[%key:common::config_flow::data::api_key%]",
+          "base_url": "[%key:common::config_flow::data::url%]"
         }
       }
     }
@@ -18,8 +18,8 @@
     "step": {
       "init": {
         "data": {
-          "api_base": "API Base URL",
           "api_key": "API Key",
+          "base_url": "API Base URL",
           "max_tokens": "Maximum tokens to return in response",
           "model": "Completion Model",
           "prompt": "Prompt Template",

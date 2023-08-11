@@ -1,6 +1,6 @@
-"""Constants fo the LocalAI Conversation integration."""
+"""Constants for the OpenAI Conversation integration."""
 
-DOMAIN = "localai_conversation"
+DOMAIN = "custom_openai_conversation"
 CONF_PROMPT = "prompt"
 DEFAULT_PROMPT = """This smart home is controlled by Home Assistant.
 
@@ -31,7 +31,6 @@ CONF_TOP_P = "top_p"
 DEFAULT_TOP_P = 1
 CONF_TEMPERATURE = "temperature"
 DEFAULT_TEMPERATURE = 0.5
-CONF_API_BASE = "api_base"
-DEFAULT_API_BASE = "http://localai:8888/v1"
-DEFAULT_API_KEY = "sk-XXXXXXXXXXXXXXXXXXXX"
-CONF_API_KEY = "sk-XXXXXXXXXXXXXXXXXXXX"
+CONF_BASE_URL = "base_url"
+DEFAULT_BASE_URL = "https://api.openai.com/v1"
+DEFAULT_API_KEY = "sk-0000000000000000000"
